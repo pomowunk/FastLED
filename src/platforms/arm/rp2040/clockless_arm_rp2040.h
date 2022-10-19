@@ -1,7 +1,19 @@
 #ifndef __INC_CLOCKLESS_ARM_RP2040
 #define __INC_CLOCKLESS_ARM_RP2040
 
-#include "hardware/structs/sio.h"
+#include <stdlib.h>
+#include "hardware/structs/systick.h"
+
+typedef struct
+{
+  io_rw_32 CTRL;                   /*!< Offset: 0x000 (R/W)  SysTick Control and Status Register */
+  io_rw_32 LOAD;                   /*!< Offset: 0x004 (R/W)  SysTick Reload Value Register */
+  io_rw_32 VAL;                    /*!< Offset: 0x008 (R/W)  SysTick Current Value Register */
+  io_rw_32 CALIB;                  /*!< Offset: 0x00C (R/ )  SysTick Calibration Register */
+} SysTick_Type;
+
+#define SysTick ((SysTick_Type*)systick_hw)
+
 #include "../common/m0clockless.h"
 
 #if FASTLED_RP2040_CLOCKLESS_PIO

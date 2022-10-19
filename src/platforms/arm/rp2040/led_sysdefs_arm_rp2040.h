@@ -1,6 +1,7 @@
 #ifndef __INC_LED_SYSDEFS_ARM_RP2040_H
 #define __INC_LED_SYSDEFS_ARM_RP2040_H
 
+#include "pico/stdlib.h"
 #include "hardware/sync.h"
 
 #define FASTLED_ARM
@@ -22,6 +23,9 @@
 typedef volatile uint32_t RoReg;
 typedef volatile uint32_t RwReg;
 
+#define micros() ((uint32_t)to_us_since_boot(get_absolute_time()))
+#define millis() ((uint32_t)to_ms_since_boot(get_absolute_time()))
+
 // #define F_CPU clock_get_hz(clk_sys) // can't use runtime function call
 // is the boot-time value in another var already for any platforms?
 // it doesn't seem to be, so hardcode the sdk default of 125 MHz
@@ -32,6 +36,7 @@ typedef volatile uint32_t RwReg;
 #define F_CPU 125000000
 #endif
 #endif
+
 
 #ifndef VARIANT_MCK
 #define VARIANT_MCK F_CPU
@@ -86,5 +91,8 @@ typedef volatile uint32_t RwReg;
 static uint32_t saved_interrupt_status;
 #define cli() (saved_interrupt_status = save_and_disable_interrupts())
 #define sei() (restore_interrupts(saved_interrupt_status))
+
+#define FASTLED_NEEDS_YIELD
+extern "C" void yield();
 
 #endif // __INC_LED_SYSDEFS_ARM_RP2040_H
